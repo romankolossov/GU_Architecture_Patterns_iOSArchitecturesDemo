@@ -17,6 +17,7 @@ class AppDetailHeaderViewController: UIViewController {
     private var appDetailHeaderView: AppDetailHeaderView {
         return self.view as! AppDetailHeaderView
     }
+    private var cache: Dictionary<String, UIImage> = [:]
     
     init(app: ITunesApp) {
         self.app = app
@@ -33,7 +34,7 @@ class AppDetailHeaderViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         fillData()
     }
     
@@ -47,14 +48,18 @@ class AppDetailHeaderViewController: UIViewController {
     private func downloadImage() {
         guard let url = self.app.iconUrl else { return }
         
-        imageDownLoader.getImage(fromUrl: url) { [weak self] (image, _) in
-            guard let self = self else { return }
+        guard let image = cache[url] else {
             
-            DispatchQueue.main.async {
-                self.appDetailHeaderView.imageView.image = image
+            imageDownLoader.getImage(fromUrl: url) { [weak self] (image, _) in
+                guard let self = self else { return }
+                self.cache[url] = image
+                
+                DispatchQueue.main.async {
+                    self.appDetailHeaderView.imageView.image = image
+                }
             }
+            return
         }
-        
+        appDetailHeaderView.imageView.image = image
     }
-
 }
