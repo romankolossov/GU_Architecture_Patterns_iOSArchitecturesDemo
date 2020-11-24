@@ -13,6 +13,7 @@ final class AppDetailViewController: UIViewController {
     public var app: ITunesApp
     
     lazy var headerViewController = AppDetailHeaderViewController(app: app)
+    lazy var appDetailWhatsNewViewController = AppDetailWhatsNewViewController(app: app)
     
     private let imageDownloader = ImageDownloader()
     
@@ -70,20 +71,19 @@ final class AppDetailViewController: UIViewController {
     }
     
     private func addDescriptionViewController() {
-        // Дз: Добавить дочерний вью контроллер
-        let vc = UIViewController()
         
-        self.addChild(vc)
-        self.view.addSubview(vc.view)
-        vc.didMove(toParent: self)
+        self.addChild(appDetailWhatsNewViewController)
+        self.view.addSubview(appDetailWhatsNewViewController.view)
         
-        vc.view.translatesAutoresizingMaskIntoConstraints = false
+        appDetailWhatsNewViewController.didMove(toParent: self)
+        
+        appDetailWhatsNewViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            vc.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            vc.view.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-            vc.view.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-            vc.view.heightAnchor.constraint(equalToConstant: 250.0)
+            appDetailWhatsNewViewController.view.topAnchor.constraint(equalTo: headerViewController.view.bottomAnchor),
+            appDetailWhatsNewViewController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+            appDetailWhatsNewViewController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+            appDetailWhatsNewViewController.view.heightAnchor.constraint(equalToConstant: 250.0)
         ])
     }
 }
