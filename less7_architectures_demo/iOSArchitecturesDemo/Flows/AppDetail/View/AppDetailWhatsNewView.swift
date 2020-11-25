@@ -19,7 +19,6 @@ class AppDetailWhatsNewView: UIView {
         label.numberOfLines = 2
         return label
     }()
-    
     private(set) lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +35,6 @@ class AppDetailWhatsNewView: UIView {
         label.numberOfLines = 18
         return label
     }()
-    
     private(set) lazy var versionLogLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -73,29 +71,37 @@ class AppDetailWhatsNewView: UIView {
         self.addSubview(versionLogLabel)
         self.addSubview(lastVersionIssueLabel)
         
-        NSLayoutConstraint.activate([
-
+        let titleLabelConstraints = [
             titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 12.0),
             titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            titleLabel.widthAnchor.constraint(equalToConstant: 120.0),
-            
+            titleLabel.widthAnchor.constraint(equalToConstant: 120.0)
+        ]
+        let subtitleLabelConstraints = [
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12.0),
             subtitleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             subtitleLabel.widthAnchor.constraint(equalToConstant: 120.0),
-            
+        ]
+        
+        let descriptionLabelConstraints = [
             descriptionLabel.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 12.0),
             descriptionLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             descriptionLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            descriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
+            descriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ]
+        let versionLogLabelConstraints = [
             versionLogLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor),
             versionLogLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 68.0),
-            versionLogLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: 12),
-            
+            versionLogLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: 12)
+        ]
+        
+        let lastVersionIssueLabelConstraints = [
             lastVersionIssueLabel.topAnchor.constraint(equalTo: versionLogLabel.bottomAnchor, constant: 12.0),
             lastVersionIssueLabel.leadingAnchor.constraint(equalTo: versionLogLabel.leadingAnchor),
             lastVersionIssueLabel.trailingAnchor.constraint(equalTo: versionLogLabel.trailingAnchor),
-        ])
+        ]
+        NSLayoutConstraint.activate(titleLabelConstraints + subtitleLabelConstraints)
+        NSLayoutConstraint.activate(descriptionLabelConstraints + versionLogLabelConstraints)
+        NSLayoutConstraint.activate(lastVersionIssueLabelConstraints)
     }
 }
 
