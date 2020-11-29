@@ -48,12 +48,18 @@ final class AppCell: UITableViewCell {
         self.configureUI()
     }
     
-    // MARK: - Methods
+    // MARK: - Major Methods
     
     func configure(with cellModel: AppCellModel) {
         self.titleLabel.text = cellModel.title
         self.subtitleLabel.text = cellModel.subtitle
         self.ratingLabel.text = cellModel.rating
+    }
+    
+    func configureSong(with cellSongModel: SongCellModel) {
+        self.titleLabel.text = cellSongModel.trackTitle
+        self.subtitleLabel.text = cellSongModel.artistName
+        self.ratingLabel.text = cellSongModel.collectionName
     }
     
     // MARK: - UI

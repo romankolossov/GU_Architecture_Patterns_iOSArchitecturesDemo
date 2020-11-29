@@ -15,9 +15,16 @@ final class SearchViewController: UIViewController {
     private var searchView: SearchView {
         return self.view as! SearchView
     }
-    
     private let searchService = ITunesSearchService()
+    
     var searchResults = [ITunesApp]() {
+        didSet {
+            searchView.tableView.isHidden = false
+            searchView.tableView.reloadData()
+            searchView.searchBar.resignFirstResponder()
+        }
+    }
+    var searchSongResults = [ITunesSong]() {
         didSet {
             searchView.tableView.isHidden = false
             searchView.tableView.reloadData()
@@ -28,14 +35,15 @@ final class SearchViewController: UIViewController {
     private struct Constants {
         static let reuseIdentifier = "reuseId"
     }
-    
     private let presenter: SearchViewOutput
+    private let presenterSong: SearchSongViewOutput
     
-    init(presenter: SearchViewOutput) {
+    init(presenter: SearchViewOutput, presenterSong: SearchSongViewOutput) {
         self.presenter = presenter
+        self.presenterSong = presenterSong
+        
         super.init(nibName: nil, bundle: nil)
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -64,10 +72,12 @@ final class SearchViewController: UIViewController {
 }
 
 //MARK: - UITableViewDataSource
+
 extension SearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.count
+        //searchResults.count
+        searchSongResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -75,14 +85,22 @@ extension SearchViewController: UITableViewDataSource {
         guard let cell = dequeuedCell as? AppCell else {
             return dequeuedCell
         }
-        let app = self.searchResults[indexPath.row]
-        let cellModel = AppCellModelFactory.cellModel(from: app)
-        cell.configure(with: cellModel)
+        //let app = self.searchResults[indexPath.row]
+        //let cellModel = AppCellModelFactory.cellModel(from: app)
+        
+        let song = self.searchSongResults[indexPath.row]
+        let cellSongModel = SongCellModelFactory.cellModel(from: song)
+        
+        //cell.configure(with: cellModel)
+        
+        cell.configureSong(with: cellSongModel)
+        
         return cell
     }
 }
 
 //MARK: - UITableViewDelegate
+
 extension SearchViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -96,6 +114,7 @@ extension SearchViewController: UITableViewDelegate {
 }
 
 //MARK: - UISearchBarDelegate
+
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -108,12 +127,17 @@ extension SearchViewController: UISearchBarDelegate {
             return
         }
         
-        presenter.viewDidSearch(with: query)
+//        presenter.viewDidSearch(with: query)
+        presenterSong.viewDidSearch(with: query)
+        
 //        self.requestApps(with: query)
     }
 }
 
-extension SearchViewController: SearchViewInput {
+//MARK: - SearchViewInput, SearchSongViewInput
+
+extension SearchViewController: SearchViewInput, SearchSongViewInput {
+    
     // MARK: - Private
     
     func throbber(show: Bool) {

@@ -60,6 +60,4 @@ extension SearchPresenter: SearchViewOutput {
     func viewDidSelectApp(_ app: ITunesApp) {
         openAppDetails(with: app)
     }
-    
-    
 }
