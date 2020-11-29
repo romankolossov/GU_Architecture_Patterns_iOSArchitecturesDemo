@@ -83,7 +83,7 @@ final class AppDetailViewController: UIViewController {
             appDetailWhatsNewViewController.view.topAnchor.constraint(equalTo: headerViewController.view.bottomAnchor),
             appDetailWhatsNewViewController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor),
             appDetailWhatsNewViewController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-            appDetailWhatsNewViewController.view.heightAnchor.constraint(equalToConstant: 250.0)
+            appDetailWhatsNewViewController.view.heightAnchor.constraint(equalToConstant: 350.0)
         ])
     }
 }

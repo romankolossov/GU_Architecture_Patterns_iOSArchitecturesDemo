@@ -41,9 +41,9 @@ class SongDetailWhatsNewViewController: UIViewController {
     // MARK: - Major methods
     
     private func fillSongData() {
-        appDetailWhatsNewView.titleLabel.text = "Детали"
-        appDetailWhatsNewView.subtitleLabel.text = song.trackName
-        appDetailWhatsNewView.descriptionLabel.text = song.artwork
+        appDetailWhatsNewView.titleLabel.text = "Инфо"
+        appDetailWhatsNewView.subtitleLabel.text = "Альбом"
+        appDetailWhatsNewView.descriptionLabel.text = song.collectionName
         appDetailWhatsNewView.versionLogLabel.text = "Исполнитель"
         appDetailWhatsNewView.lastVersionIssueLabel.text = song.artistName
     }

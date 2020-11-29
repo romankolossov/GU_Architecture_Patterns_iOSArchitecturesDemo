@@ -32,7 +32,7 @@ class AppDetailWhatsNewView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 12.0)
-        label.numberOfLines = 18
+        label.numberOfLines = 30
         return label
     }()
     private(set) lazy var versionLogLabel: UILabel = {
@@ -89,7 +89,7 @@ class AppDetailWhatsNewView: UIView {
             descriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
         let versionLogLabelConstraints = [
-            versionLogLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor),
+            versionLogLabel.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             versionLogLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 68.0),
             versionLogLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: 12)
         ]

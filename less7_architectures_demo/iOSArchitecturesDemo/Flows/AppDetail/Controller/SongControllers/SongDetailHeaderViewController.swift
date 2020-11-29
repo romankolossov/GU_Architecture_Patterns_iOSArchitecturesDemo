@@ -14,8 +14,14 @@ class SongDetailHeaderViewController: UIViewController {
     private var appDetailHeaderView: AppDetailHeaderView {
         return self.view as! AppDetailHeaderView
     }
+    // MARK: - Services
+    private let imageDownLoader = ImageDownloader()
+    
     // MARK: - Some properties
     private let song: ITunesSong
+    
+    // MARK: - Cache
+    private var cache: Dictionary<String, UIImage> = [:]
     
     // MARK: - Initilizers
     
@@ -42,9 +48,27 @@ class SongDetailHeaderViewController: UIViewController {
     // MARK: - Major methods
     
     private func fillSongData() {
-        //appDetailHeaderView.imageView.image = image
+        downloadImage()
         appDetailHeaderView.titleLabel.text = song.trackName
         appDetailHeaderView.subtitleLabel.text = song.artistName
-        appDetailHeaderView.ratingLabel.text = song.collectionName
+        appDetailHeaderView.ratingLabel.text = ""
+    }
+    
+    private func downloadImage() {
+        guard let url = self.song.artwork else { return }
+        
+        guard let image = cache[url] else {
+            
+            imageDownLoader.getImage(fromUrl: url) { [weak self] (image, _) in
+                guard let self = self else { return }
+                self.cache[url] = image
+                
+                DispatchQueue.main.async {
+                    self.appDetailHeaderView.imageView.image = image
+                }
+            }
+            return
+        }
+        appDetailHeaderView.imageView.image = image
     }
 }

@@ -84,7 +84,7 @@ final class SongDetailViewController: UIViewController {
             songDetailWhatsNewViewController.view.topAnchor.constraint(equalTo: headerViewController.view.bottomAnchor),
             songDetailWhatsNewViewController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor),
             songDetailWhatsNewViewController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-            songDetailWhatsNewViewController.view.heightAnchor.constraint(equalToConstant: 250.0)
+            songDetailWhatsNewViewController.view.heightAnchor.constraint(equalToConstant: 136.0)
         ])
     }
 }

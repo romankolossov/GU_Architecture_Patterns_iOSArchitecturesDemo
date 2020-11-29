@@ -55,6 +55,7 @@ extension SearchViewController: UITableViewDelegate {
             
             let app = searchResults[indexPath.row]
             let appDetaillViewController = AppDetailViewController(app: app)
+            
             appDetaillViewController.app = app
             publicPresenter.viewDidSelectApp(app)
         case .bySong:
@@ -62,6 +63,7 @@ extension SearchViewController: UITableViewDelegate {
             
             let song = searchSongResults[indexPath.row]
             let songDetailViewController = SongDetailViewController(song: song)
+            
             songDetailViewController.song = song
             publicPresenterSong.viewDidSelectSong(song)
         }
