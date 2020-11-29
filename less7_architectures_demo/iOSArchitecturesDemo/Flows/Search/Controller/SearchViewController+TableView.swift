@@ -48,10 +48,23 @@ extension SearchViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let app = searchResults[indexPath.row]
-        let appDetaillViewController = AppDetailViewController(app: app)
-        appDetaillViewController.app = app
-        publicPresenter.viewDidSelectApp(app)
-//        navigationController?.pushViewController(appDetaillViewController, animated: true)
+        
+        switch publicSearchView.selectedSearch {
+        case .byApplication:
+            guard !searchResults.isEmpty else { return }
+            
+            let app = searchResults[indexPath.row]
+            let appDetaillViewController = AppDetailViewController(app: app)
+            appDetaillViewController.app = app
+            publicPresenter.viewDidSelectApp(app)
+        case .bySong:
+            guard !searchSongResults.isEmpty else { return }
+            
+            let song = searchSongResults[indexPath.row]
+            let songDetailViewController = SongDetailViewController(song: song)
+            songDetailViewController.song = song
+            publicPresenterSong.viewDidSelectSong(song)
+        }
+        // navigationController?.pushViewController(appDetaillViewController, animated: true)
     }
 }

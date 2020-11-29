@@ -47,9 +47,9 @@ class SearchSongPresenter {
     }
     
     private func openSongDetails(with song: ITunesSong) {
-        // MARK: - TODO
-        //let appDetailViewController = AppDetailViewController(app: app)
-        //viewInput?.navigationController?.pushViewController(appDetailViewController, animated: true)
+        let songDetailViewController = SongDetailViewController(song: song)
+        
+        viewInput?.navigationController?.pushViewController(songDetailViewController, animated: true)
     }
 }
 

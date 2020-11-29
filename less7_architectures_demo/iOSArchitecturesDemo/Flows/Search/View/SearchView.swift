@@ -66,6 +66,7 @@ final class SearchView: UIView {
         self.searchSegmentControl.removeAllSegments()
         self.searchSegmentControl.insertSegment(withTitle: "Applications", at: 0, animated: true)
         self.searchSegmentControl.insertSegment(withTitle: "Songs", at: 1, animated: true)
+        self.searchSegmentControl.selectedSegmentIndex = 0
 
         let attr = NSDictionary(object: UIFont(descriptor: .preferredFontDescriptor(withTextStyle: .subheadline), size: 15), forKey: NSAttributedString.Key.font as NSCopying)
         self.searchSegmentControl.setTitleTextAttributes(attr as? [NSAttributedString.Key : Any] , for: .normal)
