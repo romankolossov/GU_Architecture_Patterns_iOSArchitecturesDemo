@@ -10,13 +10,18 @@ import UIKit
 
 final class SearchViewController: UIViewController {
     
-    // MARK: - Private Properties
-    
+    // MARK: - Subviews
     private var searchView: SearchView {
         return self.view as! SearchView
     }
+    public var publicSearchView: SearchView {
+        searchView
+    }
+    
+    // MARK: - Services
     private let searchService = ITunesSearchService()
     
+    // MARK: - Some properties
     var searchResults = [ITunesApp]() {
         didSet {
             searchView.tableView.isHidden = false
@@ -32,11 +37,23 @@ final class SearchViewController: UIViewController {
         }
     }
     
+    // MARK: - Constants
     private struct Constants {
         static let reuseIdentifier = "reuseId"
     }
+    public var publicReuseIdentifier: String {
+        Constants.reuseIdentifier
+    }
+    
+    // MARK: - Presenters
     private let presenter: SearchViewOutput
+    public var publicPresenter: SearchViewOutput {
+        presenter
+    }
     private let presenterSong: SearchSongViewOutput
+    public var publicPresenterSong: SearchSongViewOutput {
+        presenterSong
+    }
     
     // MARK: - Initializers
     
@@ -57,7 +74,7 @@ final class SearchViewController: UIViewController {
         super.loadView()
         self.view = SearchView()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -70,54 +87,6 @@ final class SearchViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.throbber(show: false)
-    }
-}
-
-//MARK: - UITableViewDataSource
-
-extension SearchViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch searchView.selectedSearch {
-        case .byApplication:
-            return searchResults.count
-        case .bySong:
-            return searchSongResults.count
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier, for: indexPath)
-        guard let cell = dequeuedCell as? AppCell else {
-            return dequeuedCell
-        }
-        
-        switch searchView.selectedSearch {
-        case .byApplication:
-            let app = self.searchResults[indexPath.row]
-            let cellModel = AppCellModelFactory.cellModel(from: app)
-            cell.configure(with: cellModel)
-        case .bySong:
-            let song = self.searchSongResults[indexPath.row]
-            let cellSongModel = SongCellModelFactory.cellModel(from: song)
-            cell.configureSong(with: cellSongModel)
-        }
-        
-        return cell
-    }
-}
-
-//MARK: - UITableViewDelegate
-
-extension SearchViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let app = searchResults[indexPath.row]
-        let appDetaillViewController = AppDetailViewController(app: app)
-        appDetaillViewController.app = app
-        presenter.viewDidSelectApp(app)
-//        navigationController?.pushViewController(appDetaillViewController, animated: true)
     }
 }
 
@@ -141,17 +110,13 @@ extension SearchViewController: UISearchBarDelegate {
         case .bySong:
             presenterSong.viewDidSearch(with: query)
         }
-        
-//        self.requestApps(with: query)
+        // self.requestApps(with: query)
     }
 }
 
 //MARK: - SearchViewInput, SearchSongViewInput
 
 extension SearchViewController: SearchViewInput, SearchSongViewInput {
-    
-    // MARK: - Private
-    
     func throbber(show: Bool) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = show
     }
@@ -166,7 +131,6 @@ extension SearchViewController: SearchViewInput, SearchSongViewInput {
     func showNoResults() {
         self.searchView.emptyResultView.isHidden = false
     }
-    
     func hideNoResults() {
         self.searchView.emptyResultView.isHidden = true
     }
