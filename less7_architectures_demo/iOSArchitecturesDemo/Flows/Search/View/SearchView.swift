@@ -16,6 +16,7 @@ final class SearchView: UIView {
     let tableView = UITableView()
     let emptyResultView = UIView()
     let emptyResultLabel = UILabel()
+    let searchSegmentControl = UISegmentedControl()
     
     // MARK: - Init
     
@@ -34,6 +35,7 @@ final class SearchView: UIView {
     private func configureUI() {
         self.backgroundColor = .white
         self.addSearchBar()
+        self.addSearchSegmentControl()
         self.addTableView()
         self.addEmptyResultView()
         self.setupConstraints()
@@ -43,6 +45,18 @@ final class SearchView: UIView {
         self.searchBar.translatesAutoresizingMaskIntoConstraints = false
         self.searchBar.searchBarStyle = .minimal
         self.addSubview(self.searchBar)
+    }
+    
+    private func addSearchSegmentControl() {
+        self.searchSegmentControl.translatesAutoresizingMaskIntoConstraints = false
+        self.searchSegmentControl.removeAllSegments()
+        self.searchSegmentControl.insertSegment(withTitle: "Applications", at: 0, animated: true)
+        self.searchSegmentControl.insertSegment(withTitle: "Songs", at: 1, animated: true)
+
+        let attr = NSDictionary(object: UIFont(descriptor: .preferredFontDescriptor(withTextStyle: .subheadline), size: 15), forKey: NSAttributedString.Key.font as NSCopying)
+        self.searchSegmentControl.setTitleTextAttributes(attr as? [NSAttributedString.Key : Any] , for: .normal)
+        
+        self.addSubview(self.searchSegmentControl)
     }
     
     private func addTableView() {
@@ -77,7 +91,10 @@ final class SearchView: UIView {
             self.searchBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             self.searchBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             
-            self.tableView.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor),
+            self.searchSegmentControl.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor),
+            self.searchSegmentControl.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
+            self.tableView.topAnchor.constraint(equalTo: self.searchSegmentControl.bottomAnchor),
             self.tableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             self.tableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             self.tableView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
