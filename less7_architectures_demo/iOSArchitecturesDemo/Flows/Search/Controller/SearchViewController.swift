@@ -38,6 +38,8 @@ final class SearchViewController: UIViewController {
     private let presenter: SearchViewOutput
     private let presenterSong: SearchSongViewOutput
     
+    // MARK: - Initializers
+    
     init(presenter: SearchViewOutput, presenterSong: SearchSongViewOutput) {
         self.presenter = presenter
         self.presenterSong = presenterSong
@@ -76,8 +78,12 @@ final class SearchViewController: UIViewController {
 extension SearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //searchResults.count
-        searchSongResults.count
+        switch searchView.selectedSearch {
+        case .byApplication:
+            return searchResults.count
+        case .bySong:
+            return searchSongResults.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -85,15 +91,17 @@ extension SearchViewController: UITableViewDataSource {
         guard let cell = dequeuedCell as? AppCell else {
             return dequeuedCell
         }
-        //let app = self.searchResults[indexPath.row]
-        //let cellModel = AppCellModelFactory.cellModel(from: app)
         
-        let song = self.searchSongResults[indexPath.row]
-        let cellSongModel = SongCellModelFactory.cellModel(from: song)
-        
-        //cell.configure(with: cellModel)
-        
-        cell.configureSong(with: cellSongModel)
+        switch searchView.selectedSearch {
+        case .byApplication:
+            let app = self.searchResults[indexPath.row]
+            let cellModel = AppCellModelFactory.cellModel(from: app)
+            cell.configure(with: cellModel)
+        case .bySong:
+            let song = self.searchSongResults[indexPath.row]
+            let cellSongModel = SongCellModelFactory.cellModel(from: song)
+            cell.configureSong(with: cellSongModel)
+        }
         
         return cell
     }
@@ -127,8 +135,12 @@ extension SearchViewController: UISearchBarDelegate {
             return
         }
         
-//        presenter.viewDidSearch(with: query)
-        presenterSong.viewDidSearch(with: query)
+        switch searchView.selectedSearch {
+        case .byApplication:
+            presenter.viewDidSearch(with: query)
+        case .bySong:
+            presenterSong.viewDidSearch(with: query)
+        }
         
 //        self.requestApps(with: query)
     }

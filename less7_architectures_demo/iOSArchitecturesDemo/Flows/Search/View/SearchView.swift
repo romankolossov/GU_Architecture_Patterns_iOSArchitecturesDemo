@@ -18,13 +18,25 @@ final class SearchView: UIView {
     let emptyResultLabel = UILabel()
     let searchSegmentControl = UISegmentedControl()
     
-    // MARK: - Init
+    // MARK: - Some properties
+    
+    var selectedSearch: SearchMode {
+        switch searchSegmentControl.selectedSegmentIndex {
+        case 0:
+            return .byApplication
+        case 1:
+            return.bySong
+        default:
+            return .byApplication
+        }
+    }
+    
+    // MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configureUI()
     }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.configureUI()
@@ -40,6 +52,8 @@ final class SearchView: UIView {
         self.addEmptyResultView()
         self.setupConstraints()
     }
+    
+    // MARK: Major methods
     
     private func addSearchBar() {
         self.searchBar.translatesAutoresizingMaskIntoConstraints = false
@@ -82,6 +96,8 @@ final class SearchView: UIView {
         self.addSubview(self.emptyResultView)
         self.emptyResultView.addSubview(self.emptyResultLabel)
     }
+    
+    // MARK: - Setup constraints
     
     private func setupConstraints() {
         let safeArea = self.safeAreaLayoutGuide

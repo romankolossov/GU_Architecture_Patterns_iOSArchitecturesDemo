@@ -15,6 +15,7 @@
 		C8481E43256CBA6C009280B9 /* AppDetailWhatsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8481E42256CBA6C009280B9 /* AppDetailWhatsNewViewController.swift */; };
 		C8F3D46925730B0C00E0FBD1 /* SearchSongPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F3D46825730B0C00E0FBD1 /* SearchSongPresenter.swift */; };
 		C8F3D4702573230100E0FBD1 /* SongCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F3D46F2573230100E0FBD1 /* SongCellModel.swift */; };
+		C8F7D7462573BB70005B40A8 /* SearchMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F7D7452573BB70005B40A8 /* SearchMode.swift */; };
 		E0E1D2932034A3350011E01A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E1D2922034A3350011E01A /* AppDelegate.swift */; };
 		E0E1D2952034A3350011E01A /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E1D2942034A3350011E01A /* SearchViewController.swift */; };
 		E0E1D29A2034A3350011E01A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0E1D2992034A3350011E01A /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		C8481E42256CBA6C009280B9 /* AppDetailWhatsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDetailWhatsNewViewController.swift; sourceTree = "<group>"; };
 		C8F3D46825730B0C00E0FBD1 /* SearchSongPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSongPresenter.swift; sourceTree = "<group>"; };
 		C8F3D46F2573230100E0FBD1 /* SongCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongCellModel.swift; sourceTree = "<group>"; };
+		C8F7D7452573BB70005B40A8 /* SearchMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMode.swift; sourceTree = "<group>"; };
 		E0E1D28F2034A3350011E01A /* iOSArchitecturesDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSArchitecturesDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0E1D2922034A3350011E01A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E0E1D2942034A3350011E01A /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 				E0E1D2942034A3350011E01A /* SearchViewController.swift */,
 				F8114FC022A3E5EE00102830 /* AppCellModel.swift */,
 				C8F3D46F2573230100E0FBD1 /* SongCellModel.swift */,
+				C8F7D7452573BB70005B40A8 /* SearchMode.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -463,6 +466,7 @@
 				E0E1D3D1203C48D70011E01A /* AppDetailViewController.swift in Sources */,
 				E0E1D358203ADC590011E01A /* NetworkManager.swift in Sources */,
 				E0E1D39C203AE6420011E01A /* ITunesSong.swift in Sources */,
+				C8F7D7462573BB70005B40A8 /* SearchMode.swift in Sources */,
 				E0E1D2952034A3350011E01A /* SearchViewController.swift in Sources */,
 				C8F3D4702573230100E0FBD1 /* SongCellModel.swift in Sources */,
 				E0E1D39F203AE7400011E01A /* ImageDownloader.swift in Sources */,
