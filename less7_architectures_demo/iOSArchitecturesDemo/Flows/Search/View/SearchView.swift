@@ -16,14 +16,27 @@ final class SearchView: UIView {
     let tableView = UITableView()
     let emptyResultView = UIView()
     let emptyResultLabel = UILabel()
+    let searchSegmentControl = UISegmentedControl()
     
-    // MARK: - Init
+    // MARK: - Some properties
+    
+    var selectedSearch: SearchMode {
+        switch searchSegmentControl.selectedSegmentIndex {
+        case 0:
+            return .byApplication
+        case 1:
+            return.bySong
+        default:
+            return .byApplication
+        }
+    }
+    
+    // MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configureUI()
     }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.configureUI()
@@ -34,15 +47,31 @@ final class SearchView: UIView {
     private func configureUI() {
         self.backgroundColor = .white
         self.addSearchBar()
+        self.addSearchSegmentControl()
         self.addTableView()
         self.addEmptyResultView()
         self.setupConstraints()
     }
     
+    // MARK: Major methods
+    
     private func addSearchBar() {
         self.searchBar.translatesAutoresizingMaskIntoConstraints = false
         self.searchBar.searchBarStyle = .minimal
         self.addSubview(self.searchBar)
+    }
+    
+    private func addSearchSegmentControl() {
+        self.searchSegmentControl.translatesAutoresizingMaskIntoConstraints = false
+        self.searchSegmentControl.removeAllSegments()
+        self.searchSegmentControl.insertSegment(withTitle: "Applications", at: 0, animated: true)
+        self.searchSegmentControl.insertSegment(withTitle: "Songs", at: 1, animated: true)
+        self.searchSegmentControl.selectedSegmentIndex = 0
+
+        let attr = NSDictionary(object: UIFont(descriptor: .preferredFontDescriptor(withTextStyle: .subheadline), size: 15), forKey: NSAttributedString.Key.font as NSCopying)
+        self.searchSegmentControl.setTitleTextAttributes(attr as? [NSAttributedString.Key : Any] , for: .normal)
+        
+        self.addSubview(self.searchSegmentControl)
     }
     
     private func addTableView() {
@@ -69,6 +98,8 @@ final class SearchView: UIView {
         self.emptyResultView.addSubview(self.emptyResultLabel)
     }
     
+    // MARK: - Setup constraints
+    
     private func setupConstraints() {
         let safeArea = self.safeAreaLayoutGuide
         
@@ -77,7 +108,10 @@ final class SearchView: UIView {
             self.searchBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             self.searchBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             
-            self.tableView.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor),
+            self.searchSegmentControl.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor),
+            self.searchSegmentControl.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
+            self.tableView.topAnchor.constraint(equalTo: self.searchSegmentControl.bottomAnchor),
             self.tableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             self.tableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             self.tableView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),

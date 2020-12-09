@@ -10,13 +10,18 @@ import UIKit
 
 final class SearchViewController: UIViewController {
     
-    // MARK: - Private Properties
-    
+    // MARK: - Subviews
     private var searchView: SearchView {
         return self.view as! SearchView
     }
+    public var publicSearchView: SearchView {
+        searchView
+    }
     
+    // MARK: - Services
     private let searchService = ITunesSearchService()
+    
+    // MARK: - Some properties
     var searchResults = [ITunesApp]() {
         didSet {
             searchView.tableView.isHidden = false
@@ -24,18 +29,40 @@ final class SearchViewController: UIViewController {
             searchView.searchBar.resignFirstResponder()
         }
     }
+    var searchSongResults = [ITunesSong]() {
+        didSet {
+            searchView.tableView.isHidden = false
+            searchView.tableView.reloadData()
+            searchView.searchBar.resignFirstResponder()
+        }
+    }
     
+    // MARK: - Constants
     private struct Constants {
         static let reuseIdentifier = "reuseId"
     }
-    
-    private let presenter: SearchViewOutput
-    
-    init(presenter: SearchViewOutput) {
-        self.presenter = presenter
-        super.init(nibName: nil, bundle: nil)
+    public var publicReuseIdentifier: String {
+        Constants.reuseIdentifier
     }
     
+    // MARK: - Presenters
+    private let presenter: SearchViewOutput
+    public var publicPresenter: SearchViewOutput {
+        presenter
+    }
+    private let presenterSong: SearchSongViewOutput
+    public var publicPresenterSong: SearchSongViewOutput {
+        presenterSong
+    }
+    
+    // MARK: - Initializers
+    
+    init(presenter: SearchViewOutput, presenterSong: SearchSongViewOutput) {
+        self.presenter = presenter
+        self.presenterSong = presenterSong
+        
+        super.init(nibName: nil, bundle: nil)
+    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -47,7 +74,7 @@ final class SearchViewController: UIViewController {
         super.loadView()
         self.view = SearchView()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -63,39 +90,8 @@ final class SearchViewController: UIViewController {
     }
 }
 
-//MARK: - UITableViewDataSource
-extension SearchViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier, for: indexPath)
-        guard let cell = dequeuedCell as? AppCell else {
-            return dequeuedCell
-        }
-        let app = self.searchResults[indexPath.row]
-        let cellModel = AppCellModelFactory.cellModel(from: app)
-        cell.configure(with: cellModel)
-        return cell
-    }
-}
-
-//MARK: - UITableViewDelegate
-extension SearchViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let app = searchResults[indexPath.row]
-        let appDetaillViewController = AppDetailViewController(app: app)
-        appDetaillViewController.app = app
-        presenter.viewDidSelectApp(app)
-//        navigationController?.pushViewController(appDetaillViewController, animated: true)
-    }
-}
-
 //MARK: - UISearchBarDelegate
+
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -108,14 +104,19 @@ extension SearchViewController: UISearchBarDelegate {
             return
         }
         
-        presenter.viewDidSearch(with: query)
-//        self.requestApps(with: query)
+        switch searchView.selectedSearch {
+        case .byApplication:
+            presenter.viewDidSearch(with: query)
+        case .bySong:
+            presenterSong.viewDidSearch(with: query)
+        }
+        // self.requestApps(with: query)
     }
 }
 
-extension SearchViewController: SearchViewInput {
-    // MARK: - Private
-    
+//MARK: - SearchViewInput, SearchSongViewInput
+
+extension SearchViewController: SearchViewInput, SearchSongViewInput {
     func throbber(show: Bool) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = show
     }
@@ -130,7 +131,6 @@ extension SearchViewController: SearchViewInput {
     func showNoResults() {
         self.searchView.emptyResultView.isHidden = false
     }
-    
     func hideNoResults() {
         self.searchView.emptyResultView.isHidden = true
     }

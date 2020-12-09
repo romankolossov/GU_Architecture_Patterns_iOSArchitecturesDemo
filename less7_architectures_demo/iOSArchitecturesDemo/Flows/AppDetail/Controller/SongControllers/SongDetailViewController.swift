@@ -1,27 +1,30 @@
 //
-//  AppDetailViewController.swift
+//  SongDetailViewController.swift
 //  iOSArchitecturesDemo
 //
-//  Created by ekireev on 20.02.2018.
-//  Copyright © 2018 ekireev. All rights reserved.
+//  Created by Роман Колосов on 29.11.2020.
+//  Copyright © 2020 ekireev. All rights reserved.
 //
 
 import UIKit
 
-final class AppDetailViewController: UIViewController {
+final class SongDetailViewController: UIViewController {
     
-    public var app: ITunesApp
-    
-    lazy var headerViewController = AppDetailHeaderViewController(app: app)
-    
-    private let imageDownloader = ImageDownloader()
-    
+    // MARK: - Subviews
     private var appDetailView: AppDetailView {
         return self.view as! AppDetailView
     }
+    // MARK: - Controllers
+    lazy var headerViewController = SongDetailHeaderViewController(song: song)
+    lazy var songDetailWhatsNewViewController = SongDetailWhatsNewViewController(song: song)
     
-    init(app: ITunesApp) {
-        self.app = app
+    // MARK: - Some properties
+    public var song: ITunesSong
+    
+    // MARK: - Initializers
+    
+    init(song: ITunesSong) {
+        self.song = song
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -42,7 +45,7 @@ final class AppDetailViewController: UIViewController {
         configureUI()
     }
     
-    // MARK: - Private
+    // MARK: - Major private methods
     
     private func configureUI() {
         view.backgroundColor = .white
@@ -51,7 +54,6 @@ final class AppDetailViewController: UIViewController {
         
         addChildViewController()
         addDescriptionViewController()
-        
     }
     
     private func addChildViewController() {
@@ -70,20 +72,19 @@ final class AppDetailViewController: UIViewController {
     }
     
     private func addDescriptionViewController() {
-        // Дз: Добавить дочерний вью контроллер
-        let vc = UIViewController()
         
-        self.addChild(vc)
-        self.view.addSubview(vc.view)
-        vc.didMove(toParent: self)
+        self.addChild(songDetailWhatsNewViewController)
+        self.view.addSubview(songDetailWhatsNewViewController.view)
         
-        vc.view.translatesAutoresizingMaskIntoConstraints = false
+        songDetailWhatsNewViewController.didMove(toParent: self)
+        
+        songDetailWhatsNewViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            vc.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            vc.view.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-            vc.view.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-            vc.view.heightAnchor.constraint(equalToConstant: 250.0)
+            songDetailWhatsNewViewController.view.topAnchor.constraint(equalTo: headerViewController.view.bottomAnchor),
+            songDetailWhatsNewViewController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+            songDetailWhatsNewViewController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+            songDetailWhatsNewViewController.view.heightAnchor.constraint(equalToConstant: 136.0)
         ])
     }
 }
